@@ -9,13 +9,6 @@
     "bio": "Meet the person behind every curated issue theme and every detailed Editor's note. When not planning the next issue for the Youth Gazette, Silah spends her time reading and obsessing over fantasy and YA novels or watching another season of some web series. Her one true love is biryani. Sad songs with complicated lyrics and a funky beat are her jam. She is an argumentative dreamer and a person with strong opinions"
   },
   {
-    "id": "ashweena",
-    "name": "Ashweena",
-    "role": "Writer",
-    "group": "writers",
-    "order": 1
-  },
-  {
     "id": "danya-anas-iftikhar",
     "name": "Danya Anas Iftikhar",
     "role": "Creative Director",
@@ -23,6 +16,13 @@
     "photo": "danya-anas-iftikhar.webp",
     "order": 2,
     "bio": "The backbone of LJS and its visuals. The person who brings life to every issue through dazzling designs. Danya is an introspective person who loves deep diving into documentaries about everything and anything. As a self-taught designer, she also loves experimenting with design techniques. She is a beautiful mix of digicams, bangles, and alt-pop music. Danya is an ambitious soul with the burdens of being an eldest daughter."
+  },
+  {
+    "id": "ashweena",
+    "name": "Ashweena",
+    "role": "Writer",
+    "group": "writers",
+    "order": 4
   },
   {
     "id": "ayesha-rashid",
