@@ -2,8 +2,8 @@
   "siteName": "Literature & Journalism Society",
   "tagline": "A youth-led society publishing literature and journalism, free for everyone.",
   "applicationsOpen": true,
-  "contactEmail": "",
-  "formRelayKey": "",
+  "contactEmail": "literatureandjournalismsociety@gmail.com",
+  "formRelayKey": "72db5ebf-0af3-4886-8f4f-5a1654dc0297",
   "social": {
     "instagram": "https://www.instagram.com/literatureandjournalismsociety"
   },
@@ -13,5 +13,6 @@
     "writers": "The minds who help create every single issue of The Youth Gazette, with their unique perspectives and beautiful words.",
     "designers": "The tiny but mighty design team of LJS, who are some of the coolest people you will find. Their ability to perfectly encapsulate a theme into visuals is their greatest quality."
   },
-  "instagramFeed": ""
+  "instagramFeed": "",
+  "applyFormUrl": "https://forms.gle/Gp9S4XauT5QyqRLF7"
 }
