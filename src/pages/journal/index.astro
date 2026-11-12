@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts, getRatings, noRating } from '../../lib/site';
+const posts = await getPosts();
+const ratings = await getRatings();
+const cats = [...new Set(posts.map((p) => p.data.category))];
+---
+<Base title="Journal" description="New writing from our members, published between issues.">
+  <div class="wrap page-head fade">
+    <span class="eyebrow">Reflections, reporting and verse</span>
+    <h1 style="margin-top:12px">The Journal</h1>
+    <p>New writing from our members, published between issues.</p>
+  </div>
+  <div class="wrap" style="padding-bottom:110px">
+    {posts.length ? (
+      <>
+        <div class="chips" data-filter="cat" aria-label="Filter by category">
+          <button class="chip on" data-c="All" type="button">All ({posts.length})</button>
+          {cats.map((c) => <button class="chip" data-c={c} type="button">{c}</button>)}
+        </div>
+        <div class="grid" data-filter-target="cat">
+          {posts.map((p) => <PostCard post={p} rating={ratings.get(`post:${p.id}`) ?? noRating} />)}
+        </div>
+      </>
+    ) : <p style="color:var(--ink-2)">The first posts are coming soon.</p>}
+  </div>
+</Base>

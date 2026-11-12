@@ -1,0 +1,37 @@
+---
+import { S, url, splitTitle } from '../lib/site';
+// Pinned, scroll-driven hero: looping ink video, letter scatter, desktop-only 3D pages (src/scripts/hero3d.ts).
+const { latest } = Astro.props as { latest?: { id: string } };
+const readHref = latest ? url(`issues/${latest.id}/read/`) : url('issues/');
+const title = splitTitle([['Literature'], ['&', '*Journalism'], ['Society']]);
+---
+<section class="hero-track" id="heroTrack">
+  <div class="hero" id="hero">
+    <video class="hv" id="hv" muted loop playsinline preload="none" poster={url('media/hero-ink.jpg')} aria-hidden="true">
+      <source src={url('media/hero-ink.mp4')} type="video/mp4" />
+    </video>
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="wrap fade">
+      <div class="hero-in">
+        <span class="eyebrow h-eb">A youth-led society · free for all</span>
+        <h1 class="ht" aria-label={S.siteName} style="margin-top:18px" set:html={title} />
+        <div class="hero-foot h-foot">
+          <p>We publish young writers, poets and reporters, and make reading free and open to everyone.</p>
+          <div class="hero-actions">
+            <a class="btn accent" href={readHref}>Read the latest issue</a>
+            <a class="btn ghost" href={url('apply/')}>Join the society</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="h-quote">
+      <p class="q">Every voice deserves a <em>page</em>.</p>
+      <p class="qs">Read, write and be published. Always free, for everyone.</p>
+      <div class="hero-actions">
+        <a class="btn accent" href={readHref}>Read the latest issue</a>
+        <a class="btn ghost" href={url('apply/')}>Join the society</a>
+      </div>
+    </div>
+    <div class="h-scroll" aria-hidden="true"><span>Scroll</span><i></i></div>
+  </div>
+</section>

@@ -1,0 +1,43 @@
+[
+  {
+    "id": "issue-01",
+    "number": 1,
+    "title": "Tabula Rasa",
+    "date": "2026-03",
+    "theme": "c3",
+    "blurb": "The first issue of The Youth Gazette: an intricately curated collection of poetry, prose and beautifully written pieces that tells the story of courage, failure and human emotions. Tabula rasa, a blank slate that gets filled with colours and art when passion and talent come to work together.",
+    "pages": [
+      "issues/issue-01/p-001.webp",
+      "issues/issue-01/p-002.webp",
+      "issues/issue-01/p-003.webp",
+      "issues/issue-01/p-004.webp",
+      "issues/issue-01/p-005.webp",
+      "issues/issue-01/p-006.webp",
+      "issues/issue-01/p-007.webp",
+      "issues/issue-01/p-008.webp",
+      "issues/issue-01/p-009.webp",
+      "issues/issue-01/p-010.webp",
+      "issues/issue-01/p-011.webp",
+      "issues/issue-01/p-012.webp",
+      "issues/issue-01/p-013.webp",
+      "issues/issue-01/p-014.webp",
+      "issues/issue-01/p-015.webp",
+      "issues/issue-01/p-016.webp",
+      "issues/issue-01/p-017.webp",
+      "issues/issue-01/p-018.webp",
+      "issues/issue-01/p-019.webp",
+      "issues/issue-01/p-020.webp",
+      "issues/issue-01/p-021.webp",
+      "issues/issue-01/p-022.webp",
+      "issues/issue-01/p-023.webp",
+      "issues/issue-01/p-024.webp",
+      "issues/issue-01/p-025.webp",
+      "issues/issue-01/p-026.webp",
+      "issues/issue-01/p-027.webp",
+      "issues/issue-01/p-028.webp",
+      "issues/issue-01/p-029.webp",
+      "issues/issue-01/p-030.webp"
+    ],
+    "cover": "issues/issue-01/cover.webp"
+  }
+]

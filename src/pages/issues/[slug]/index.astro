@@ -1,0 +1,50 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Cover from '../../../components/Cover.astro';
+import MiniRating from '../../../components/MiniRating.astro';
+import ReviewSection from '../../../components/ReviewSection.astro';
+import IssueCard from '../../../components/IssueCard.astro';
+import { url, fmtMonth, getIssues, getRatings, noRating } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  const issues = await getIssues();
+  return issues.map((issue) => ({ params: { slug: issue.id }, props: { issue } }));
+}
+const { issue } = Astro.props;
+const d = issue.data;
+const ratings = await getRatings();
+const rating = ratings.get(`issue:${issue.id}`) ?? noRating;
+const others = (await getIssues()).filter((i) => i.id !== issue.id).slice(0, 3);
+---
+<Base title={`Issue ${d.number}: ${d.title}`} description={d.blurb} image={d.cover ?? 'media/hero-ink.jpg'}>
+  <div class="wrap fade" style="padding-top:56px"><a class="back" href={url('issues/')}>← All issues</a></div>
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="feature">
+        <div><div data-par="0.05"><Cover issue={issue} tilt /></div></div>
+        <div>
+          <span class="meta">Issue {d.number} · {fmtMonth(d.date)}{d.pages.length ? ` · ${d.pages.length} pages` : ''}</span>
+          <h2>{d.title}</h2>
+          <MiniRating rating={rating} />
+          <p style="margin-top:18px">{d.blurb}</p>
+          <div class="acts">
+            <a class="btn" href={url(`issues/${issue.id}/read/`)}>Read online</a>
+            {d.pdf && <a class="btn ghost" href={url(d.pdf)} download>Download PDF</a>}
+            <a class="btn ghost" href={url('issues/')}>All issues</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="background:var(--paper-2)"><div class="wrap"><ReviewSection target={`issue:${issue.id}`} rating={rating} /></div></section>
+  {others.length > 0 && (
+    <section>
+      <div class="wrap">
+        <div class="sec-head"><h2>More issues</h2></div>
+        <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+          {others.map((i) => <IssueCard issue={i} rating={ratings.get(`issue:${i.id}`) ?? noRating} />)}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>

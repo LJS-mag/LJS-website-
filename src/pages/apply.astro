@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { S, url } from '../lib/site';
+const relayReady = !!S.formRelayKey;
+const demo = !relayReady && import.meta.env.DEV;
+// Only ever link out to Google Forms, even if the settings file was edited by hand.
+const externalForm = /^https:\/\/(docs\.google\.com\/forms\/|forms\.gle\/)\S+$/.test(S.applyFormUrl ?? '');
+---
+<Base title="Apply" description="Apply to join the Literature & Journalism Society.">
+  <div class="wrap page-head fade">
+    {S.applicationsOpen ? <span class="status">Applications open</span> : <span class="status" style="background:rgba(14,12,13,.1);color:var(--ink-2)">Applications closed</span>}
+    <h1 style="margin-top:18px">Join the society</h1>
+  </div>
+  <div class="wrap" style="padding-bottom:110px">
+    <div class="form-wrap">
+      <div>
+        <p style="font-size:19px;color:var(--ink-2)">We are looking for writers, designers and editors. Tell us a little about yourself, and we will be in touch.</p>
+        <ul style="margin-top:28px;list-style:none;display:grid;gap:12px;color:var(--ink-2)">
+          <li>— Open to ages 13 to 25</li>
+          <li>— No experience needed</li>
+        </ul>
+      </div>
+      <div id="formbox">
+        {!S.applicationsOpen ? (
+          <div class="ok"><h2>Applications are closed</h2><p style="color:var(--ink-2)">Please check back soon, or follow us on Instagram for the next call.</p></div>
+        ) : externalForm ? (
+          <div class="ok">
+            <h2>Apply with our form</h2>
+            <p style="color:var(--ink-2);margin-bottom:22px">The application opens in Google Forms in a new tab. It takes a few minutes.</p>
+            <a class="btn" href={S.applyFormUrl} target="_blank" rel="noopener noreferrer">Open the application form</a>
+            <p class="meta" style="margin-top:18px">If you are under 18, please let a parent or guardian know you are applying. See our <a href={url('privacy/')} style="text-decoration:underline">privacy notice</a>.</p>
+          </div>
+        ) : (relayReady || demo) ? (
+          <form id="applyForm" data-form="apply" data-key={S.formRelayKey} data-demo={demo ? '' : undefined} novalidate>
+            <div class="row">
+              <label>Full name<input name="name" required autocomplete="name" /><span class="err"></span></label>
+              <label>Email<input name="email" type="email" required autocomplete="email" /><span class="err"></span></label>
+            </div>
+            <div class="row">
+              <label>Age<input name="age" type="number" min="13" max="25" required inputmode="numeric" /><span class="err"></span></label>
+              <label>Role you are interested in
+                <select name="role" required>
+                  <option value="">Choose a role</option><option>Writer</option><option>Graphic designer</option><option>Editor</option><option>Not sure yet</option>
+                </select><span class="err"></span>
+              </label>
+            </div>
+            <label>Portfolio or writing sample (link, optional)<input name="link" type="url" placeholder="https://" /></label>
+            <label>Why do you want to join?<textarea name="why" required></textarea><span class="err"></span></label>
+            <label style="display:flex;gap:10px;align-items:flex-start;font-weight:400">
+              <input type="checkbox" name="consent" required style="width:auto;margin-top:5px" />
+              <span>I agree to the <a href={url('privacy/')} style="text-decoration:underline">privacy notice</a>. If I am under 18, a parent or guardian knows I am applying.</span>
+            </label>
+            <span class="err" data-e="consent"></span>
+            <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+            <div><button class="btn" type="submit">Submit application</button></div>
+            {demo && <p class="meta">Dev mode: nothing is sent.</p>}
+          </form>
+        ) : (
+          <div class="ok"><h2>Applications open soon</h2><p style="color:var(--ink-2)">The form will be available shortly.</p></div>
+        )}
+      </div>
+    </div>
+  </div>
+</Base>

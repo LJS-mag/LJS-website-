@@ -1,0 +1,17 @@
+{
+  "siteName": "Literature & Journalism Society",
+  "tagline": "A youth-led society publishing literature and journalism, free for everyone.",
+  "applicationsOpen": true,
+  "contactEmail": "",
+  "formRelayKey": "",
+  "social": {
+    "instagram": "https://www.instagram.com/literatureandjournalismsociety"
+  },
+  "stats": [],
+  "about": "The Literature & Journalism Society is a youth-led community that publishes poetry, prose, reporting and interviews from young creatives. Our mission is to make literature free and accessible, and to give young writers a platform to be read.",
+  "teamIntro": {
+    "writers": "The minds who help create every single issue of The Youth Gazette, with their unique perspectives and beautiful words.",
+    "designers": "The tiny but mighty design team of LJS, who are some of the coolest people you will find. Their ability to perfectly encapsulate a theme into visuals is their greatest quality."
+  },
+  "instagramFeed": ""
+}

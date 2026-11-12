@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import Person from '../components/Person.astro';
+import { S, url, getTeam } from '../lib/site';
+
+const team = await getTeam();
+const groups = [
+  { key: 'leadership', label: 'Leadership', intro: '' },
+  { key: 'writers', label: 'Writers', intro: S.teamIntro.writers },
+  { key: 'designers', label: 'Designers', intro: S.teamIntro.designers },
+].map((g) => ({ ...g, members: team.filter((m) => m.data.group === g.key) })).filter((g) => g.members.length);
+---
+<Base title="About" description={S.about}>
+  <section class="dark" style="padding-bottom:clamp(48px,7vw,90px)">
+    <div class="wrap fade">
+      <div class="about-top">
+        <h1>About<br />us</h1>
+        <div><p>{S.about}</p></div>
+      </div>
+      {S.stats.length > 0 && (
+        <div class="stats">
+          {S.stats.map((s) => <div class="stat"><b data-to={parseInt(s.value)} data-suf={s.value.replace(/^\d+/, '')}>{s.value}</b><span>{s.label}</span></div>)}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="values">
+        <div><h2>Accessible</h2><p>Every issue is free to read online.</p></div>
+        <div><h2>Youth-led</h2><p>Our editors, writers and designers are young creatives.</p></div>
+        <div><h2>Open</h2><p>New members are welcome whenever applications are open.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--paper-2)">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">The team</span><h2 style="margin-top:10px">Meet the society</h2></div>
+        <p>The people who write, design and edit every issue.</p>
+      </div>
+      <div class="chips" data-filter="group" aria-label="Filter the team">
+        <button class="chip on" data-c="All" type="button">All</button>
+        {groups.map((g) => <button class="chip" data-c={g.key} type="button">{g.label}</button>)}
+      </div>
+      <div id="tgrid">
+        {groups.map((g) => (
+          <div class="tg" data-group={g.key}>
+            <h3 class="gh">{g.label}<span>{g.members.length}</span></h3>
+            {g.intro && <p class="gi">{g.intro}</p>}
+            <div class={`team-grid${g.key === 'leadership' ? ' lead' : ''}`}>
+              {g.members.map((m) => <Person member={m} />)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta dark">
+    <div class="wrap">
+      <span class="eyebrow">Join us</span>
+      <h2>Become a member.</h2>
+      <p>{S.applicationsOpen ? 'Applications are open.' : 'Applications are closed for now. Check back soon.'}</p>
+      <a class="btn accent" href={url('apply/')}>{S.applicationsOpen ? 'Apply now' : 'Learn more'}</a>
+    </div>
+  </section>
+</Base>

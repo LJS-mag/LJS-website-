@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { S } from '../lib/site';
+---
+<Base title="Privacy" description="How the society handles the information you send us.">
+  <div class="wrap page-head fade"><span class="eyebrow">Plain language</span><h1 style="margin-top:12px">Privacy</h1></div>
+  <div class="wrap" style="padding-bottom:110px">
+    <div style="max-width:68ch;display:grid;gap:22px;font-size:18px">
+      <p>This site does not use advertising or tracking cookies. We want to keep what we collect to the minimum.</p>
+      <div><h2 style="font-size:32px;margin-bottom:8px">Applications</h2>{S.applyFormUrl ? <p>Applications are made through a Google Form, which is run by Google under its own privacy policy. We receive what you type into it, such as your name, email, age, the role you chose and your answers. It is read only by the team. We use it to reply to you. We do not publish it or share it.</p> : <p>If you apply, we receive your name, email, age, the role you chose, an optional link and your answer. It is sent to the society's email inbox and read only by the team. We use it to reply to you. We do not publish it or share it.</p>}</div>
+      <div><h2 style="font-size:32px;margin-bottom:8px">Reviews</h2><p>If you leave a review, we receive the name you typed, your rating and your text. The team reads it first. Approved reviews are shown on the site with the name you gave, so please do not use your full name if you prefer not to.</p></div>
+      <div><h2 style="font-size:32px;margin-bottom:8px">Under 18</h2><p>This society is for people aged 13 to 25. If you are under 18, please let a parent or guardian know before you apply.</p></div>
+      <div><h2 style="font-size:32px;margin-bottom:8px">Your choices</h2><p>You can ask us to remove a review or delete your application at any time{S.contactEmail ? <> by emailing <a href={`mailto:${S.contactEmail}`} style="text-decoration:underline">{S.contactEmail}</a></> : ''}.</p></div>
+    </div>
+  </div>
+</Base>

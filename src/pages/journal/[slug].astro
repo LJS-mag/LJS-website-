@@ -1,0 +1,30 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import MiniRating from '../../components/MiniRating.astro';
+import ReviewSection from '../../components/ReviewSection.astro';
+import { url, fmtDay, getPosts, getRatings, noRating } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const d = post.data;
+const { Content } = await render(post);
+const ratings = await getRatings();
+const rating = ratings.get(`post:${post.id}`) ?? noRating;
+---
+<Base title={d.title} description={d.excerpt} image={d.cover ?? 'media/hero-ink.jpg'}>
+  <article class="post fade">
+    <a class="back" href={url('journal/')}>← Back to the journal</a>
+    <span class="eyebrow" style="display:block;margin-top:24px">{d.category} · {fmtDay(d.date)}</span>
+    <h1>{d.title}</h1>
+    <div class="meta">by {d.author}</div>
+    <MiniRating rating={rating} />
+    <div class="hero-img" data-par="0.05">{d.cover ? <img src={url(d.cover)} alt="" width="1200" height="675" /> : <div class={d.theme}></div>}</div>
+    <Content />
+    <a class="btn ghost" href={url('journal/')}>More from the journal</a>
+  </article>
+  <section style="background:var(--paper-2)"><div class="wrap"><ReviewSection target={`post:${post.id}`} rating={rating} /></div></section>
+</Base>

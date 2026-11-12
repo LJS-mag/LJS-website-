@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import '../../styles/admin.css';
+import { url } from '../../lib/site';
+---
+<Base title="Admin" bare noindex>
+  <link slot="head" rel="manifest" href={url('admin/manifest.webmanifest')} />
+  <div id="admin"><noscript><p style="padding:24px">The admin needs JavaScript.</p></noscript></div>
+  <script>
+    import '../../admin/main';
+  </script>
+</Base>

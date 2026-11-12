@@ -1,0 +1,15 @@
+---
+import { url, fmtMonth } from '../lib/site';
+// A generated cover in the palette, or the real cover image when the society uploads one.
+const { issue, tilt = false } = Astro.props as { issue: { data: { number: number; title: string; theme: string; cover?: string } }; tilt?: boolean };
+const d = issue.data;
+---
+{d.cover
+  ? <img class="cover cover-img" src={url(d.cover)} alt={`Cover of Issue ${d.number}: ${d.title}`} width="600" height="800" loading="lazy" data-tilt={tilt ? '' : undefined} />
+  : (
+    <div class={`cover ${d.theme}`} data-tilt={tilt ? '' : undefined}>
+      <span class="no">Issue {String(d.number).padStart(2, '0')}</span>
+      <span class="ttl">{d.title}</span>
+      <span class="org">Literature &amp; Journalism Society</span>
+    </div>
+  )}

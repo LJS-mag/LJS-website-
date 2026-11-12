@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import IssueCard from '../../components/IssueCard.astro';
+import { getIssues, getRatings, noRating } from '../../lib/site';
+const issues = await getIssues();
+const ratings = await getRatings();
+---
+<Base title="Issues" description="Every issue we have published, free to read in your browser.">
+  <div class="wrap page-head fade">
+    <span class="eyebrow">The archive</span>
+    <h1 style="margin-top:12px">Issues</h1>
+    <p>Every issue we have published, free to read in your browser. Open one to turn the pages.</p>
+  </div>
+  <div class="wrap" style="padding-bottom:110px">
+    {issues.length
+      ? <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:48px 32px">{issues.map((i) => <IssueCard issue={i} rating={ratings.get(`issue:${i.id}`) ?? noRating} />)}</div>
+      : <p style="color:var(--ink-2)">The first issue is on its way.</p>}
+  </div>
+</Base>

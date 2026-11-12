@@ -1,0 +1,93 @@
+---
+import '../styles/global.css';
+import { S, url } from '../lib/site';
+
+const { title, description = S.tagline, image = 'media/hero-ink.jpg', bare = false, noindex = false } = Astro.props as {
+  title?: string;
+  description?: string;
+  image?: string;
+  bare?: boolean; // no nav/footer (used by the full-screen reader and admin)
+  noindex?: boolean;
+};
+const full = title ? `${title} · ${S.siteName}` : S.siteName;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const path = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) : Astro.url.pathname.replace(/^\//, '');
+const section = path.split('/')[0] || 'home';
+const nav = [
+  ['home', 'Home', ''],
+  ['issues', 'Issues', 'issues/'],
+  ['journal', 'Journal', 'journal/'],
+  ['about', 'About', 'about/'],
+];
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const og = new URL(url(image), Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{full}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={S.siteName} />
+    <meta property="og:title" content={full} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={og} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#E7E2D7" />
+    <link rel="icon" type="image/png" href={url('media/favicon.png')} />
+    <link rel="preload" href={url('fonts/instrumentserif-normal-400.woff2')} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={url('fonts/inter-variable.woff2')} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+  </head>
+  <body>
+    <div id="prog"></div>
+    {!bare && (
+      <header class="nav">
+        <div class="wrap">
+          <a href={url()} class="brand"><img class="mark" src={url('media/logo-eggplant.png')} width="38" height="38" alt="" /><span>{S.siteName}</span></a>
+          <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+          <nav id="menu" aria-label="Main">
+            {nav.map(([key, label, href]) => (
+              <a href={url(href)} class={section === key ? 'on' : undefined} aria-current={section === key ? 'page' : undefined}>{label}</a>
+            ))}
+            <a href={url('apply/')} class={`btn${section === 'apply' ? ' on' : ''}`}>Apply</a>
+          </nav>
+        </div>
+      </header>
+    )}
+    <main id="app">
+      <slot />
+    </main>
+    {!bare && (
+      <footer>
+        <div class="wrap">
+          <div class="foot">
+            <div>
+              <img src={url('media/logo-linen.png')} width="56" height="56" alt="" style="margin-bottom:18px" />
+              <div class="big">Literature for everyone.</div>
+            </div>
+            <div>
+              <div class="fh">Explore</div>
+              <a href={url('issues/')}>Issues</a><a href={url('journal/')}>Journal</a><a href={url('about/')}>About &amp; team</a><a href={url('apply/')}>Apply</a>
+            </div>
+            <div>
+              <div class="fh">Connect</div>
+              {S.social.instagram && <a href={S.social.instagram} target="_blank" rel="noopener">Instagram</a>}
+              {S.contactEmail && <a href={`mailto:${S.contactEmail}`}>{S.contactEmail}</a>}
+              <a href={url('privacy/')}>Privacy</a>
+            </div>
+          </div>
+          <div class="legal"><span>© {new Date().getFullYear()} {S.siteName}</span><span>Free to read, free to submit.</span></div>
+        </div>
+      </footer>
+    )}
+    <script>
+      import '../scripts/site';
+    </script>
+  </body>
+</html>

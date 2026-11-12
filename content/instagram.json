@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ig-1",
+    "url": "https://www.instagram.com/literatureandjournalismsociety/",
+    "theme": "c0",
+    "count": 3,
+    "date": "2026-10-28",
+    "caption": "New issue out now",
+    "sample": true
+  },
+  {
+    "id": "ig-2",
+    "url": "https://www.instagram.com/literatureandjournalismsociety/",
+    "theme": "c1",
+    "count": 3,
+    "date": "2026-10-20",
+    "caption": "Behind the scenes",
+    "sample": true
+  },
+  {
+    "id": "ig-3",
+    "url": "https://www.instagram.com/literatureandjournalismsociety/",
+    "theme": "c4",
+    "count": 1,
+    "date": "2026-10-12",
+    "caption": "Poem of the week",
+    "sample": true
+  },
+  {
+    "id": "ig-4",
+    "url": "https://www.instagram.com/literatureandjournalismsociety/",
+    "theme": "c2",
+    "count": 4,
+    "date": "2026-10-03",
+    "caption": "Meet the team",
+    "sample": true
+  },
+  {
+    "id": "ig-5",
+    "url": "https://www.instagram.com/literatureandjournalismsociety/",
+    "theme": "c5",
+    "count": 1,
+    "date": "2026-09-22",
+    "caption": "Open call for writers",
+    "sample": true
+  },
+  {
+    "id": "ig-6",
+    "url": "https://www.instagram.com/literatureandjournalismsociety/",
+    "theme": "c3",
+    "count": 1,
+    "date": "2026-09-14",
+    "caption": "Reading list",
+    "sample": true
+  },
+  {
+    "id": "ig-7",
+    "url": "https://www.instagram.com/literatureandjournalismsociety/",
+    "theme": "c0",
+    "count": 3,
+    "date": "2026-09-05",
+    "caption": "Issue preview",
+    "sample": true
+  },
+  {
+    "id": "ig-8",
+    "url": "https://www.instagram.com/literatureandjournalismsociety/",
+    "theme": "c1",
+    "count": 1,
+    "date": "2026-08-27",
+    "caption": "Thank you",
+    "sample": true
+  }
+]

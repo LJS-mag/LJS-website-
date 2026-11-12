@@ -1,0 +1,6 @@
+---
+// Read-only star rating. `avg` is 0..5; the fill width is a CSS variable (see .stars in global.css).
+const { avg, large = false } = Astro.props as { avg: number; large?: boolean };
+const pct = ((avg / 5) * 100).toFixed(1);
+---
+<span class={`stars${large ? ' lg' : ''}`} style={`--p:${pct}%`} role="img" aria-label={`${avg.toFixed(1)} out of 5 stars`}>★★★★★</span>

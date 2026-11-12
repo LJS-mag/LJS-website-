@@ -1,0 +1,62 @@
+---
+import Stars from './Stars.astro';
+import { S, fmtDay, type Rating } from '../lib/site';
+// Ratings summary + approved reviews (rendered at build time) and the "leave a review" form.
+// Submissions are emailed to the society (see src/scripts/forms.ts); they appear here after the
+// society approves them in the admin page and publishes.
+const { target, rating } = Astro.props as { target: string; rating: Rating };
+const dist = [5, 4, 3, 2, 1].map((s) => ({ s, c: rating.items.filter((x) => x.rating === s).length }));
+const relayReady = !!S.formRelayKey;
+const demo = !relayReady && import.meta.env.DEV;
+---
+<div class="rev" id="reviews">
+  <div class="sum">
+    <span class="eyebrow">Ratings &amp; reviews</span>
+    <div class="avg" style="margin-top:12px">{rating.n ? rating.avg.toFixed(1) : '–'}</div>
+    <Stars avg={rating.avg} large />
+    <div class="meta" style="margin-top:6px">{rating.n} review{rating.n === 1 ? '' : 's'}</div>
+    <div class="bars">
+      {dist.map(({ s, c }) => (
+        <div class="bar"><span>{s}</span><i style={`--w:${rating.n ? (c / rating.n) * 100 : 0}%`}></i><span>{c}</span></div>
+      ))}
+    </div>
+  </div>
+  <div>
+    <div class="rlist">
+      {rating.n
+        ? rating.items.map((x) => (
+            <div class="ritem">
+              <div class="top"><b>{x.name}</b><time datetime={x.date}>{fmtDay(x.date)}</time></div>
+              <Stars avg={x.rating} />
+              <p>{x.text}</p>
+            </div>
+          ))
+        : <p style="color:var(--ink-2)">Be the first to leave a review.</p>}
+    </div>
+
+    {(relayReady || demo) ? (
+      <form class="rform" data-form="review" data-target={target} data-key={S.formRelayKey} data-demo={demo ? '' : undefined} novalidate>
+        <h2>Leave a review</h2>
+        <div>
+          <div style="font-size:14px;font-weight:500;margin-bottom:6px" id="rl">Your rating</div>
+          <div class="rate" role="radiogroup" aria-labelledby="rl">
+            {[5, 4, 3, 2, 1].map((v) => (
+              <>
+                <input type="radio" name="rate" id={`rt${v}`} value={v} />
+                <label for={`rt${v}`}><span class="sr">{v} star{v > 1 ? 's' : ''}</span>★</label>
+              </>
+            ))}
+          </div>
+          <span class="err" data-e="rate"></span>
+        </div>
+        <label>Name<input name="n" maxlength="40" autocomplete="name" /><span class="err" data-e="n"></span></label>
+        <label>Your review<textarea name="t" maxlength="600" style="min-height:110px"></textarea><span class="err" data-e="t"></span></label>
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+        <div><button class="btn" type="submit">Post review</button></div>
+        <p class="meta" data-note>Reviews are checked by the team before they appear.{demo ? ' (Dev mode: nothing is sent.)' : ''}</p>
+      </form>
+    ) : (
+      <p class="meta" style="margin-top:36px">Reviews open soon.</p>
+    )}
+  </div>
+</div>

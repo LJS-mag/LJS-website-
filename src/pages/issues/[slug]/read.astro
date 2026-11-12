@@ -1,0 +1,48 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Cover from '../../../components/Cover.astro';
+import { url, fmtMonth, getIssues } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  const issues = await getIssues();
+  return issues.map((issue) => ({ params: { slug: issue.id }, props: { issue } }));
+}
+const { issue } = Astro.props;
+const d = issue.data;
+const data = {
+  id: issue.id,
+  title: d.title,
+  label: `Issue ${d.number} · ${fmtMonth(d.date)}`,
+  pages: d.pages.map((p: string) => url(p)), // empty = sample placeholder pages
+  back: url(`issues/${issue.id}/`),
+};
+---
+<Base title={`Read: ${d.title}`} bare noindex>
+  <div id="reader" class="open" role="dialog" aria-modal="true" aria-label={`Reading ${d.title}`}>
+    <div class="r-top">
+      <div class="t">{d.title}<small>{data.label}</small></div>
+      <div class="r-btns">
+        <button class="ibtn" id="rFull" aria-label="Fullscreen" title="Fullscreen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+        <a class="ibtn" href={data.back} aria-label="Close reader" title="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5L5 19"/></svg></a>
+      </div>
+    </div>
+    <div class="stage">
+      <button class="nav-arrow" id="rPrev" aria-label="Previous page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="book" id="book"></div>
+      <button class="nav-arrow" id="rNext" aria-label="Next page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="r-foot">
+      <div class="m-arrows"><button class="ibtn" id="mPrev" aria-label="Previous page">‹</button></div>
+      <span id="rCount"></span>
+      <div class="m-arrows"><button class="ibtn" id="mNext" aria-label="Next page">›</button></div>
+    </div>
+    <noscript>
+      <p style="padding:24px;text-align:center">The reader needs JavaScript. {d.pdf ? <a href={url(d.pdf)} style="text-decoration:underline">Download the PDF instead.</a> : null}</p>
+    </noscript>
+  </div>
+  <template id="reader-cover"><Cover issue={issue} /></template>
+  <script type="application/json" id="reader-data" set:html={JSON.stringify(data)} />
+  <script>
+    import '../../../scripts/reader';
+  </script>
+</Base>

@@ -1,0 +1,14 @@
+---
+import Cover from './Cover.astro';
+import MiniRating from './MiniRating.astro';
+import { url, fmtMonth, type Rating } from '../lib/site';
+const { issue, rating } = Astro.props as { issue: any; rating: Rating };
+const d = issue.data;
+const count = d.pages.length;
+---
+<a class="issue-card" href={url(`issues/${issue.id}/`)}>
+  <Cover issue={issue} tilt />
+  <div class="meta">{fmtMonth(d.date)}{count ? ` · ${count} pages` : ''}</div>
+  <h2 style="font-size:28px;margin-top:4px">{d.title}</h2>
+  <MiniRating rating={rating} />
+</a>

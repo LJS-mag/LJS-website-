@@ -1,0 +1,13 @@
+---
+import MiniRating from './MiniRating.astro';
+import { url, fmtDay, type Rating } from '../lib/site';
+const { post, rating } = Astro.props as { post: any; rating: Rating };
+const d = post.data;
+---
+<a class="card" href={url(`journal/${post.id}/`)} data-cat={d.category}>
+  <div class="thumb">{d.cover ? <img src={url(d.cover)} alt="" width="600" height="750" loading="lazy" /> : <div class={d.theme}></div>}</div>
+  <span class="tag">{d.category}</span>
+  <h2>{d.title}</h2>
+  <div class="by">by {d.author} · {fmtDay(d.date)}</div>
+  <MiniRating rating={rating} />
+</a>

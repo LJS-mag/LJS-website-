@@ -1,0 +1,116 @@
+[
+  {
+    "id": "silah-khan",
+    "name": "Silah Khan",
+    "role": "Chief Editor",
+    "group": "leadership",
+    "photo": "silah-khan.webp",
+    "order": 1,
+    "bio": "Meet the person behind every curated issue theme and every detailed Editor's note. When not planning the next issue for the Youth Gazette, Silah spends her time reading and obsessing over fantasy and YA novels or watching another season of some web series. Her one true love is biryani. Sad songs with complicated lyrics and a funky beat are her jam. She is an argumentative dreamer and a person with strong opinions"
+  },
+  {
+    "id": "danya-anas-iftikhar",
+    "name": "Danya Anas Iftikhar",
+    "role": "Creative Director",
+    "group": "leadership",
+    "photo": "danya-anas-iftikhar.webp",
+    "order": 2,
+    "bio": "The backbone of LJS and its visuals. The person who brings life to every issue through dazzling designs. Danya is an introspective person who loves deep diving into documentaries about everything and anything. As a self-taught designer, she also loves experimenting with design techniques. She is a beautiful mix of digicams, bangles, and alt-pop music. Danya is an ambitious soul with the burdens of being an eldest daughter."
+  },
+  {
+    "id": "ayesha-rashid",
+    "name": "Ayesha Rashid",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "ayesha-rashid.webp",
+    "order": 10
+  },
+  {
+    "id": "zaina-salahuddin",
+    "name": "Zaina Salahuddin",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "zaina-salahuddin.webp",
+    "order": 11
+  },
+  {
+    "id": "hadiqa-khalid",
+    "name": "Hadiqa Khalid",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "hadiqa-khalid.webp",
+    "order": 12
+  },
+  {
+    "id": "wjh",
+    "name": "WJH",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "wjh.webp",
+    "order": 13
+  },
+  {
+    "id": "bushra-shahid",
+    "name": "Bushra Shahid",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "bushra-shahid.webp",
+    "order": 14
+  },
+  {
+    "id": "zahra-hammad",
+    "name": "Zahra Hammad",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "zahra-hammad.webp",
+    "order": 15
+  },
+  {
+    "id": "hamna-faisal",
+    "name": "Hamna Faisal",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "hamna-faisal.webp",
+    "order": 16
+  },
+  {
+    "id": "umme-kulsoom",
+    "name": "Umme Kulsoom",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "umme-kulsoom.webp",
+    "order": 17
+  },
+  {
+    "id": "manal-kafeel",
+    "name": "Manal Kafeel",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "manal-kafeel.webp",
+    "order": 18
+  },
+  {
+    "id": "zunaira-faisal",
+    "name": "Zunaira Faisal",
+    "role": "Writer",
+    "group": "writers",
+    "photo": "zunaira-faisal.webp",
+    "order": 19
+  },
+  {
+    "id": "hiba-fatima",
+    "name": "Hiba Fatima",
+    "role": "Graphic Designer",
+    "group": "designers",
+    "photo": "hiba-fatima.webp",
+    "order": 30
+  },
+  {
+    "id": "muhammad-yahya-khan",
+    "name": "Muhammad Yahya Khan",
+    "role": "Graphic Designer",
+    "group": "designers",
+    "photo": "muhammad-yahya-khan.webp",
+    "order": 31
+  }
+]

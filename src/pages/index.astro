@@ -1,0 +1,69 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Cover from '../components/Cover.astro';
+import MiniRating from '../components/MiniRating.astro';
+import PostCard from '../components/PostCard.astro';
+import InstagramFeed from '../components/InstagramFeed.astro';
+import { url, fmtMonth, getIssues, getPosts, getRatings, noRating } from '../lib/site';
+
+const issues = await getIssues();
+const posts = (await getPosts()).slice(0, 4);
+const ratings = await getRatings();
+const latest = issues[0];
+---
+<Base>
+  <Hero latest={latest} />
+
+  <section class="intro">
+    <div class="wrap">
+      <span class="eyebrow">Introduction</span>
+      <p class="big">Every voice deserves a page. We are a society of students who <em>write, edit and report</em>, a place where young creatives are published, read and heard.</p>
+      <a class="btn ghost" href={url('about/')}>About the society</a>
+    </div>
+  </section>
+
+  {latest && (
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="rule"><span class="eyebrow">Our latest issue</span></div>
+        <div class="feature" style="margin-top:56px">
+          <div><div data-par="0.06"><Cover issue={latest} tilt /></div></div>
+          <div>
+            <span class="meta">Issue {latest.data.number} · {fmtMonth(latest.data.date)}</span>
+            <h2>{latest.data.title}</h2>
+            <MiniRating rating={ratings.get(`issue:${latest.id}`) ?? noRating} />
+            <p style="margin-top:18px">{latest.data.blurb}</p>
+            <div class="acts">
+              <a class="btn" href={url(`issues/${latest.id}/read/`)}>Read online</a>
+              <a class="btn ghost" href={url('issues/')}>All issues</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {posts.length > 0 && (
+    <section style="background:var(--paper-2)">
+      <div class="wrap">
+        <div class="sec-head">
+          <div><span class="eyebrow">The journal</span><h2 style="margin-top:10px">Recent writing</h2></div>
+          <a class="btn ghost" href={url('journal/')}>View all</a>
+        </div>
+        <div class="grid">{posts.map((p) => <PostCard post={p} rating={ratings.get(`post:${p.id}`) ?? noRating} />)}</div>
+      </div>
+    </section>
+  )}
+
+  <InstagramFeed />
+
+  <section class="cta">
+    <div class="wrap">
+      <span class="eyebrow">Join us</span>
+      <h2>Write with us.</h2>
+      <p style="color:var(--ink-2)">Writers, designers and editors. If you love words, there is a place for you.</p>
+      <a class="btn" href={url('apply/')}>Apply to join</a>
+    </div>
+  </section>
+</Base>
