@@ -18,13 +18,6 @@
     "bio": "The backbone of LJS and its visuals. The person who brings life to every issue through dazzling designs. Danya is an introspective person who loves deep diving into documentaries about everything and anything. As a self-taught designer, she also loves experimenting with design techniques. She is a beautiful mix of digicams, bangles, and alt-pop music. Danya is an ambitious soul with the burdens of being an eldest daughter."
   },
   {
-    "id": "ashweena",
-    "name": "Ashweena",
-    "role": "Writer",
-    "group": "writers",
-    "order": 4
-  },
-  {
     "id": "ayesha-rashid",
     "name": "Ayesha Rashid",
     "role": "Writer",
@@ -105,6 +98,14 @@
     "order": 19
   },
   {
+    "id": "ashweena",
+    "name": "Ashweena",
+    "role": "Writer",
+    "group": "writers",
+    "order": 20,
+    "photo": "ashweena.webp"
+  },
+  {
     "id": "hiba-fatima",
     "name": "Hiba Fatima",
     "role": "Graphic Designer",
@@ -119,5 +120,13 @@
     "group": "designers",
     "photo": "muhammad-yahya-khan.webp",
     "order": 31
+  },
+  {
+    "id": "aafra",
+    "name": "Aafra",
+    "role": "Graphic Designer",
+    "group": "designers",
+    "order": 32,
+    "photo": "aafra.webp"
   }
 ]
