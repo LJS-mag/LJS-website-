@@ -1,12 +1,22 @@
 ---
 import { S, url, splitTitle } from '../lib/site';
 // Pinned, scroll-driven hero: looping ink video, letter scatter, desktop-only 3D pages (src/scripts/hero3d.ts).
-const { latest } = Astro.props as { latest?: { id: string } };
+const { latest, duo } = Astro.props as { latest?: { id: string }; duo?: { r: string; g: string; b: string } };
 const readHref = latest ? url(`issues/${latest.id}/read/`) : url('issues/');
 const title = splitTitle([['Literature'], ['&', '*Journalism'], ['Society']]);
 ---
 <section class="hero-track" id="heroTrack">
-  <div class="hero" id="hero">
+  {duo && (
+    <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+      <filter id="duo" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0" />
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues={duo.r} /><feFuncG type="table" tableValues={duo.g} /><feFuncB type="table" tableValues={duo.b} />
+        </feComponentTransfer>
+      </filter>
+    </svg>
+  )}
+  <div class={`hero${duo ? ' duo' : ''}`} id="hero">
     <video class="hv" id="hv" muted loop playsinline preload="none" poster={url('media/hero-ink.jpg')} aria-hidden="true">
       <source src={url('media/hero-ink.mp4')} type="video/mp4" />
     </video>

@@ -37,6 +37,12 @@ Nothing is saved to the website until you press Publish. Your unpublished change
 ### Add an issue
 Issues > Add an issue. Fill in the number, title, month and description, choose a cover colour, and choose the **PDF**. Wait for "Preparing page..." to finish (a laptop is faster than a phone, and a long PDF can take a minute), then Save and Publish. Each page becomes an image for the book reader.
 
+### Change the home page colours to match an issue
+When you add or edit an issue, find **Home page colours** and tick **Colour the home page to match this issue**. Tap one of the ready-made colour sets, or pick your own **Background** (light) and **Accent** (dark). A small preview shows how it will look, and a message tells you if the colours would be hard to read (the admin will not let you save those).
+- The home page uses the colours of the **newest issue**. When you publish a newer issue, the home page follows that issue instead (with its own colours, or the usual wine and linen if you leave the box unticked).
+- To go back to the usual look, open the newest issue, untick the box, Save and Publish.
+- Only the home page changes. The ink video, the floating pages, the buttons, the header and the footer all take the new colours. The magazine cover stays as designed.
+
 ### Write a journal post
 Journal > Write a post. Add title, author, category, date and text (blank line between paragraphs; start a line with `>` for a pull quote). A cover photo is optional.
 

@@ -1,6 +1,6 @@
 import {
   WebGLRenderer, Scene, Fog, PerspectiveCamera, CanvasTexture, MeshBasicMaterial, DoubleSide,
-  PlaneGeometry, Group, Mesh,
+  PlaneGeometry, Group, Mesh, Color,
 } from 'three';
 import { state } from './state';
 
@@ -17,8 +17,16 @@ export function initHero3d() {
     return; // no WebGL: the video alone is the hero
   }
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
+  // The usual wine and linen look is hard-coded below. When the newest issue sets its own home page colours (inline on <html>), the sheets follow them.
+  const root = getComputedStyle(document.documentElement);
+  const custom = !!document.documentElement.style.getPropertyValue('--accent');
+  const css = (n: string) => root.getPropertyValue(n).trim();
+  const C = custom
+    ? { fog: css('--paper'), page: css('--card'), edge: css('--paper-2'), ink: css('--black'), tint: '#' + new Color(css('--accent')).lerp(new Color('#ffffff'), 0.55).getHexString() }
+    : { fog: '#e7e2d7', page: '#F3F0E8', edge: '#BFBCB2', ink: '#251821', tint: '#b48aa0' };
+  const inkRgb = (a: number) => { const c = new Color(C.ink); return `rgba(${Math.round(c.r * 255)},${Math.round(c.g * 255)},${Math.round(c.b * 255)},${a})`; };
   const scene = new Scene();
-  scene.fog = new Fog(0xe7e2d7, 9, 20);
+  scene.fog = new Fog(new Color(C.fog).getHex(), 9, 20);
   const cam = new PerspectiveCamera(50, 1, 0.1, 50);
   cam.position.set(0, 0, 9);
 
@@ -27,14 +35,14 @@ export function initHero3d() {
     c.width = 256;
     c.height = 352;
     const g = c.getContext('2d')!;
-    g.fillStyle = '#F3F0E8';
+    g.fillStyle = C.page;
     g.fillRect(0, 0, 256, 352);
-    g.strokeStyle = '#BFBCB2';
+    g.strokeStyle = C.edge;
     g.lineWidth = 6;
     g.strokeRect(0, 0, 256, 352);
-    g.fillStyle = 'rgba(37,24,33,.85)';
+    g.fillStyle = inkRgb(0.85);
     g.fillRect(24, 36, 90 + seed * 22, 9);
-    g.fillStyle = 'rgba(37,24,33,.5)';
+    g.fillStyle = inkRgb(0.5);
     for (let i = 0; i < 15; i++) g.fillRect(24, 76 + i * 17, 110 + ((i * 57 + seed * 41) % 100), 3);
     const v = g.createRadialGradient(128, 176, 80, 128, 176, 230);
     v.addColorStop(0, 'rgba(0,0,0,0)');
@@ -47,7 +55,7 @@ export function initHero3d() {
   });
   const mats = [
     ...tex.map((t) => new MeshBasicMaterial({ map: t, transparent: true, opacity: 0.92, side: DoubleSide, depthWrite: false })),
-    new MeshBasicMaterial({ map: tex[1], color: 0xb48aa0, transparent: true, opacity: 0.85, side: DoubleSide, depthWrite: false }),
+    new MeshBasicMaterial({ map: tex[1], color: new Color(C.tint), transparent: true, opacity: 0.85, side: DoubleSide, depthWrite: false }),
   ];
   const geo = new PlaneGeometry(1.5, 2.1);
   const group = new Group();

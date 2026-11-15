@@ -5,7 +5,7 @@ import type { GitHub, FileChange } from './github';
 
 export type Group = 'leadership' | 'writers' | 'designers';
 export type Team = { id: string; name: string; role: string; group: Group; photo?: string; bio?: string; order: number };
-export type Issue = { id: string; number: number; title: string; date: string; blurb: string; theme: string; cover?: string; pages: string[]; pdf?: string; sample?: boolean };
+export type Issue = { id: string; number: number; title: string; date: string; blurb: string; theme: string; palette?: { bg: string; accent: string }; cover?: string; pages: string[]; pdf?: string; sample?: boolean };
 export type Review = { id: string; target: string; name: string; rating: number; text: string; date: string; status: 'approved' | 'hidden'; sample?: boolean };
 export type Post = { id: string; title: string; author: string; category: string; date: string; theme: string; cover?: string; excerpt?: string; sample?: boolean; body: string };
 export type Insta = { id: string; url: string; image?: string; theme: string; count: number; date: string; caption?: string; sample?: boolean };

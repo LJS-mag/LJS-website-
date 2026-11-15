@@ -1,6 +1,7 @@
 import { model, touch, files, type Issue } from '../model';
 import { esc, $, field, themePicker, toast, go, bar, badge, discardFile, busy, assetUrl } from '../ui';
 import { pdfPages, fileToB64 } from '../images';
+import { PRESETS, checkPalette } from '../../lib/palette';
 
 const pad = (n: number, w = 2) => String(n).padStart(w, '0');
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -28,6 +29,19 @@ function form(el: HTMLElement, id: string | null) {
       ${field('Month published', `<input name="date" type="month" value="${esc(i.date.slice(0, 7))}" required>`)}
       ${field('Description', `<textarea name="blurb" rows="4" required>${esc(i.blurb)}</textarea>`, 'A few sentences shown on the issue page.')}
       ${themePicker(i.theme)}
+      <div class="a-f a-pal">
+        <span>Home page colours</span>
+        <label class="a-check"><input type="checkbox" name="usepal" ${i.palette ? 'checked' : ''}><span><b>Colour the home page to match this issue</b><br><small>The home page uses these colours while this is the newest issue. Leave it off to keep the usual wine and linen.</small></span></label>
+        <div class="a-palbox" ${i.palette ? '' : 'hidden'}>
+          <div class="a-presets" role="group" aria-label="Ready-made colours">${PRESETS.map((p) => `<button type="button" class="a-preset" data-bg="${p.bg}" data-ac="${p.accent}" title="${esc(p.name)}" aria-label="${esc(p.name)}"><i style="background:${p.bg}"></i><i style="background:${p.accent}"></i></button>`).join('')}</div>
+          <div class="a-pickers">
+            <label>Background (light)<input type="color" name="pbg" value="${esc(i.palette?.bg ?? PRESETS[0].bg)}"></label>
+            <label>Accent (dark)<input type="color" name="pac" value="${esc(i.palette?.accent ?? PRESETS[0].accent)}"></label>
+          </div>
+          <div class="a-prev" aria-hidden="true"><b>Literature &amp; Journalism</b><span>Sample button</span></div>
+          <small class="a-palmsg" role="status"></small>
+        </div>
+      </div>
       <div class="a-f"><span>${id && i.pages.length ? 'Replace the PDF (optional)' : 'PDF of the issue'}</span>
         <input name="pdf" type="file" accept="application/pdf" ${id && i.pages.length ? '' : 'required'}>
         <small>Each page becomes an image for the book reader. Big PDFs can take a minute, and a laptop is faster than a phone. Keep the tab open until it finishes.</small></div>
@@ -39,6 +53,21 @@ function form(el: HTMLElement, id: string | null) {
   bar(el, id ? `Issue ${i.number}` : 'New issue');
   const f = $<HTMLFormElement>('form', el);
   const err = (m: string) => { $('.a-err', el).textContent = m; };
+
+  /* home page colours: show/hide, presets and a live preview with the same readability check the site uses */
+  const usepal = $<HTMLInputElement>('input[name=usepal]', el), palbox = $('.a-palbox', el), prev = $('.a-prev', el), palmsg = $('.a-palmsg', el);
+  const pbg = $<HTMLInputElement>('input[name=pbg]', el), pac = $<HTMLInputElement>('input[name=pac]', el);
+  const refreshPal = () => {
+    palbox.hidden = !usepal.checked;
+    prev.style.setProperty('--pv-bg', pbg.value); prev.style.setProperty('--pv-ac', pac.value);
+    const bad = checkPalette({ bg: pbg.value, accent: pac.value });
+    palmsg.textContent = bad || 'These colours are easy to read.';
+    palmsg.classList.toggle('bad', !!bad);
+  };
+  usepal.addEventListener('change', refreshPal); pbg.addEventListener('input', refreshPal); pac.addEventListener('input', refreshPal);
+  el.querySelectorAll<HTMLElement>('.a-preset').forEach((b) => b.addEventListener('click', () => { pbg.value = b.dataset.bg!; pac.value = b.dataset.ac!; refreshPal(); }));
+  refreshPal();
+
   const prog = $('.a-progress', el);
   const setProg = (done: number, total: number, label: string) => {
     prog.hidden = false;
@@ -58,6 +87,8 @@ function form(el: HTMLElement, id: string | null) {
     const pdf = (f.elements.namedItem('pdf') as HTMLInputElement).files?.[0];
     if (!id && !pdf) return err('Choose the PDF of the issue.');
     if (pdf && pdf.size > 120 * 1024 * 1024) return err('That PDF is over 120 MB. Please compress it first.');
+    const palette = d.get('usepal') ? { bg: String(d.get('pbg')).toUpperCase(), accent: String(d.get('pac')).toUpperCase() } : undefined;
+    if (palette) { const bad = checkPalette(palette); if (bad) return err(`Home page colours: ${bad}`); }
     const b = $<HTMLButtonElement>('button[type=submit]', el);
     busy(b, true, 'Working…');
     err('');
@@ -76,6 +107,7 @@ function form(el: HTMLElement, id: string | null) {
         if (d.get('keep')) { rec.pdf = `${dir}/${rec.id}.pdf`; files.set('public/' + rec.pdf, { b64: await fileToB64(pdf) }); } else delete rec.pdf;
       } else if (!d.get('keep') && rec.pdf) { discardFile('public/' + rec.pdf, true); delete rec.pdf; }
       Object.assign(rec, { title, date, blurb, theme: String(d.get('theme') || 'c0') });
+      if (palette) rec.palette = palette; else delete rec.palette;
       delete rec.sample; // edited by a person, so no longer placeholder content
       if (!i.id) model.issues.push(rec);
       touch('issues');

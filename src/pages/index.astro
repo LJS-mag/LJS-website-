@@ -6,14 +6,17 @@ import MiniRating from '../components/MiniRating.astro';
 import PostCard from '../components/PostCard.astro';
 import InstagramFeed from '../components/InstagramFeed.astro';
 import { url, fmtMonth, getIssues, getPosts, getRatings, noRating } from '../lib/site';
+import { paletteVars } from '../lib/palette';
 
 const issues = await getIssues();
 const posts = (await getPosts()).slice(0, 4);
 const ratings = await getRatings();
 const latest = issues[0];
+// The home page can wear the newest issue's colours (set in the admin). Without them, the usual wine and linen are used.
+const palette = paletteVars(latest?.data.palette);
 ---
-<Base>
-  <Hero latest={latest} />
+<Base palette={palette}>
+  <Hero latest={latest} duo={palette?.duo} />
 
   <section class="intro">
     <div class="wrap">

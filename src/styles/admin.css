@@ -83,6 +83,20 @@ a.a-row:hover{border-color:var(--ink);transform:translateY(-1px)}
 .a-sw .cover{width:44px;height:58px;aspect-ratio:auto;padding:0;border-radius:8px;box-shadow:0 0 0 1px var(--line);cursor:pointer;display:block}
 .a-sw input:checked + .cover{box-shadow:0 0 0 3px var(--accent)}
 .a-sw input:focus-visible + .cover{outline:2px solid var(--accent);outline-offset:3px}
+/* home page colours */
+.a-palbox{display:grid;gap:14px;margin-top:6px}
+.a-presets{display:flex;gap:10px;flex-wrap:wrap}
+.a-preset{display:flex;width:56px;height:40px;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px var(--line);padding:0}
+.a-preset i{flex:1;display:block}
+.a-preset:hover{box-shadow:0 0 0 3px var(--accent)}
+.a-pickers{display:flex;gap:18px;flex-wrap:wrap}
+.a-pickers label{display:grid;gap:6px;font-size:14px}
+.a-pickers input[type=color]{width:84px;height:44px;padding:2px;border-radius:10px;cursor:pointer}
+.a-prev{--pv-bg:#E7E2D7;--pv-ac:#431B2D;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;border-radius:12px;background:var(--pv-bg);box-shadow:0 0 0 1px var(--line)}
+.a-prev b{font:400 24px/1.1 var(--serif);color:var(--pv-ac)}
+.a-prev span{padding:8px 16px;border-radius:999px;background:var(--pv-ac);color:var(--pv-bg);font-size:14px;font-weight:500;white-space:nowrap}
+.a-palmsg{color:var(--ink-2)}
+.a-palmsg.bad{color:#9b1c1c;font-weight:500}
 .a-stat{display:grid;grid-template-columns:110px 1fr auto;gap:10px;margin-bottom:10px}
 .a-stat .btn{padding:8px 14px}
 .a-progress{position:relative;height:34px;border-radius:999px;background:rgba(14,12,13,.1);overflow:hidden}

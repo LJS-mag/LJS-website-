@@ -26,6 +26,8 @@ const issues = defineCollection({
     date: z.string().regex(/^\d{4}-\d{2}(-\d{2})?$/, 'use YYYY-MM or YYYY-MM-DD'),
     blurb: z.string().min(10),
     theme: theme.default('c0'),
+    // Optional home page colours while this is the newest issue: a light background and a dark accent (see src/lib/palette.ts).
+    palette: z.object({ bg: z.string().regex(/^#[0-9a-fA-F]{6}$/), accent: z.string().regex(/^#[0-9a-fA-F]{6}$/) }).optional(),
     cover: z.string().optional(), // image path, otherwise a generated cover is shown
     pages: z.array(z.string()).default([]), // page images, in order, relative to /public
     pdf: z.string().optional(),

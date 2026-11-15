@@ -1,13 +1,15 @@
 ---
 import '../styles/global.css';
 import { S, url } from '../lib/site';
+import type { paletteVars } from '../lib/palette';
 
-const { title, description = S.tagline, image = 'media/hero-ink.jpg', bare = false, noindex = false } = Astro.props as {
+const { title, description = S.tagline, image = 'media/hero-ink.jpg', bare = false, noindex = false, palette = null } = Astro.props as {
   title?: string;
   description?: string;
   image?: string;
   bare?: boolean; // no nav/footer (used by the full-screen reader and admin)
   noindex?: boolean;
+  palette?: ReturnType<typeof paletteVars>; // optional home page colours from the newest issue
 };
 const full = title ? `${title} · ${S.siteName}` : S.siteName;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -23,7 +25,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const og = new URL(url(image), Astro.site).href;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" style={palette?.style}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,7 +39,7 @@ const og = new URL(url(image), Astro.site).href;
     <meta property="og:description" content={description} />
     <meta property="og:image" content={og} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#E7E2D7" />
+    <meta name="theme-color" content={palette?.themeColor ?? '#E7E2D7'} />
     <link rel="icon" type="image/png" href={url('media/favicon.png')} />
     <link rel="preload" href={url('fonts/instrumentserif-normal-400.woff2')} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={url('fonts/inter-variable.woff2')} as="font" type="font/woff2" crossorigin />
