@@ -42,6 +42,23 @@ const R = { k: 0, p: 0, busy: false, single: false };
 const book = $('#book');
 const reader = $('#reader');
 
+/* Shape the book like the real pages (A5, A4, square...) so nothing is cropped and margins stay equal on all four sides. */
+let pr = 0.75;
+function shape() {
+  reader.style.setProperty('--pr', String(pr));
+  book.style.aspectRatio = String(R.single ? pr : 2 * pr);
+}
+if (hasImages) {
+  const probe = new Image();
+  probe.onload = () => {
+    if (probe.naturalWidth && probe.naturalHeight) {
+      pr = probe.naturalWidth / probe.naturalHeight;
+      shape();
+    }
+  };
+  probe.src = data.pages[0];
+}
+
 function warm(n: number) {
   // start loading the next pages so turning feels instant
   if (!hasImages) return;
@@ -51,6 +68,7 @@ function warm(n: number) {
 function render() {
   R.single = innerWidth < 800;
   reader.classList.toggle('single', R.single);
+  shape();
   if (R.single) {
     book.innerHTML = half('r', pageHtml(R.p));
     $('#rCount').textContent = `Page ${R.p + 1} of ${total}`;
