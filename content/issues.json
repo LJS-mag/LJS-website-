@@ -38,6 +38,10 @@
       "issues/issue-01/p-029.webp",
       "issues/issue-01/p-030.webp"
     ],
-    "cover": "issues/issue-01/cover.webp"
+    "cover": "issues/issue-01/cover.webp",
+    "palette": {
+      "bg": "#F0E1DD",
+      "accent": "#7A2638"
+    }
   }
 ]
