@@ -10,7 +10,7 @@ export const S = raw as {
   instagramFeed: string;
   /** Optional link to the society's own Google Form. When set, the Apply page sends people there instead of using the built-in form. */
   applyFormUrl?: string;
-  social: { instagram?: string; tiktok?: string; youtube?: string };
+  social: { instagram?: string; spotify?: string; tiktok?: string; youtube?: string };
   stats: { value: string; label: string }[];
   about: string;
   teamIntro: { writers: string; designers: string };
