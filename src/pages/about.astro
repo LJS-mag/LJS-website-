@@ -4,18 +4,20 @@ import Person from '../components/Person.astro';
 import { S, url, getTeam } from '../lib/site';
 
 const team = await getTeam();
+// the About text can have several paragraphs: a blank line starts a new one
+const aboutParas = S.about.split(/(?:\r?\n){2,}/).map((x) => x.trim()).filter(Boolean);
 const groups = [
   { key: 'leadership', label: 'Leadership', intro: '' },
   { key: 'writers', label: 'Writers', intro: S.teamIntro.writers },
   { key: 'designers', label: 'Designers', intro: S.teamIntro.designers },
 ].map((g) => ({ ...g, members: team.filter((m) => m.data.group === g.key) })).filter((g) => g.members.length);
 ---
-<Base title="About" description={S.about}>
+<Base title="About" description={aboutParas[0] ?? S.tagline}>
   <section class="dark" style="padding-bottom:clamp(48px,7vw,90px)">
     <div class="wrap fade">
       <div class="about-top">
         <h1>About<br />us</h1>
-        <div><p>{S.about}</p></div>
+        <div class="about-text">{aboutParas.map((t) => <p>{t}</p>)}</div>
       </div>
       {S.stats.length > 0 && (
         <div class="stats">

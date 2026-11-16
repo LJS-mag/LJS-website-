@@ -12,8 +12,9 @@ export function render(el: HTMLElement) {
       ${field('Form key (Web3Forms)', `<input name="key" value="${esc(s.formRelayKey)}" autocomplete="off" spellcheck="false">`, 'A free key from web3forms.com, made with the society email. Applications and reviews are sent to that inbox. Without a key, the forms say "open soon".')}
       ${field('Instagram link', `<input name="ig" type="url" value="${esc(s.social.instagram ?? '')}" placeholder="https://www.instagram.com/…">`)}
       ${field('Spotify link (optional)', `<input name="spotify" type="url" value="${esc(s.social.spotify ?? '')}" placeholder="https://open.spotify.com/…" autocomplete="off" spellcheck="false">`, 'Shown in the footer. Open your Spotify profile or playlist, choose Share, then Copy link. Leave empty to hide it.')}
+      ${field('Substack link (optional)', `<input name="substack" type="url" value="${esc(s.social.substack ?? '')}" placeholder="https://substack.com/@…" autocomplete="off" spellcheck="false">`, 'Shown in the footer. Open your Substack profile and copy the address from the top of the browser. Leave empty to hide it.')}
       ${field('Automatic Instagram feed link (optional)', `<input name="feed" value="${esc(String(s.instagramFeed ?? ''))}" placeholder="https://feeds.behold.so/…" autocomplete="off" spellcheck="false">`, 'Paste the feed link from behold.so to show your latest posts on the home page automatically. Leave empty to use the posts you add by hand under Instagram. If the feed ever stops, the hand-added posts are shown instead.')}
-      ${field('About the society', `<textarea name="about" rows="5">${esc(s.about)}</textarea>`, 'Shown on the About page.')}
+      ${field('About the society', `<textarea name="about" rows="8">${esc(s.about)}</textarea>`, 'Shown on the About page. Leave a blank line between paragraphs.')}
       ${field('About the writers (team page)', `<textarea name="tw" rows="3">${esc(s.teamIntro.writers)}</textarea>`)}
       ${field('About the designers (team page)', `<textarea name="td" rows="3">${esc(s.teamIntro.designers)}</textarea>`)}
       <div class="a-f"><span>Numbers on the About page</span>
@@ -38,6 +39,9 @@ export function render(el: HTMLElement) {
     const spotifyRaw = String(d.get('spotify')).trim();
     if (spotifyRaw && !/^https:\/\/open\.spotify\.com\/\S+$/.test(spotifyRaw)) { $('.a-err', el).textContent = 'That does not look like a Spotify link. It should start with https://open.spotify.com/. Use Share, then Copy link in Spotify.'; return; }
     const spotify = spotifyRaw.replace(/[?#].*$/, '');
+    const substackRaw = String(d.get('substack')).trim();
+    if (substackRaw && !/^https:\/\/([a-z0-9-]+\.)?substack\.com\/\S+$/.test(substackRaw)) { $('.a-err', el).textContent = 'That does not look like a Substack link. It should start with https://substack.com/ or https://yourname.substack.com/.'; return; }
+    const substack = substackRaw.replace(/[?#].*$/, '');
     const feed = String(d.get('feed')).trim();
     if (feed && !/^https:\/\/feeds\.behold\.so\/[\w-]+$/.test(feed)) { $('.a-err', el).textContent = 'The feed link should look like https://feeds.behold.so/ followed by letters and numbers. Copy it from your Behold dashboard.'; return; }
     const sv = d.getAll('sv').map(String), sl = d.getAll('sl').map(String);
@@ -45,8 +49,8 @@ export function render(el: HTMLElement) {
     if (stats.some((x) => !x.value || !x.label)) { $('.a-err', el).textContent = 'Each number needs both the number and its label.'; return; }
     Object.assign(s, {
       applicationsOpen: !!d.get('open'), contactEmail: email, formRelayKey: String(d.get('key')).trim(),
-      social: { ...s.social, instagram: String(d.get('ig')).trim() || undefined, spotify: spotify || undefined }, instagramFeed: feed, applyFormUrl: apply,
-      about: String(d.get('about')).trim(), teamIntro: { writers: String(d.get('tw')).trim(), designers: String(d.get('td')).trim() }, stats,
+      social: { ...s.social, instagram: String(d.get('ig')).trim() || undefined, spotify: spotify || undefined, substack: substack || undefined }, instagramFeed: feed, applyFormUrl: apply,
+      about: String(d.get('about')).replace(/\r\n/g, '\n').trim(), teamIntro: { writers: String(d.get('tw')).trim(), designers: String(d.get('td')).trim() }, stats,
     });
     $('.a-err', el).textContent = '';
     touch('settings');

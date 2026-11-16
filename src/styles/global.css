@@ -184,6 +184,10 @@ footer{background:var(--black);color:var(--on-black);padding:72px 0 32px}
 .foot .fh{font:500 13px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#BFBCB2;margin-bottom:14px}
 .foot a{display:block;padding:3px 0;color:var(--on-black)}
 .foot a:hover{color:#fff}
+.foot a.soc{display:flex;align-items:center;gap:10px}
+.foot a.soc .soc-i{flex:none;opacity:.85;transition:opacity .2s,transform .2s}
+.foot a.soc:hover .soc-i{opacity:1;transform:translateY(-1px)}
+.about-text{display:grid;gap:18px}
 .foot .big{font-family:var(--serif);font-size:32px;line-height:1.05;max-width:12ch}
 .sub{display:flex;gap:8px;margin-top:6px}
 .sub input{background:rgba(231,226,215,.08);border-color:rgba(231,226,215,.25);color:var(--on-black)}
@@ -255,7 +259,7 @@ footer{background:var(--black);color:var(--on-black);padding:72px 0 32px}
 .ht .ch{display:inline-block;transform:translate(calc(var(--a) * var(--dx) * 1vw),calc(var(--a) * var(--dy) * 1px)) rotate(calc(var(--a) * var(--r) * 1deg));will-change:transform}
 .hero.f-off .h-foot{pointer-events:none}
 .h-quote{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 var(--gutter);opacity:var(--b);transform:translateY(calc((1 - var(--b)) * 60px));pointer-events:none}
-.h-quote .q{font:400 clamp(44px,min(8.5vw,15vh),128px)/.98 var(--serif);letter-spacing:-.02em;max-width:14ch}
+.h-quote .q{font:400 clamp(44px,min(8.5vw,15vh),128px)/.98 var(--serif);letter-spacing:-.02em;max-width:18ch;text-wrap:balance}
 .h-quote .q em{color:var(--accent)}
 .h-quote .qs{margin-top:20px;color:var(--ink-2);font-size:18px;max-width:42ch}
 .h-quote .hero-actions{justify-content:center;margin-top:32px;pointer-events:none}

@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { S, url } from '../lib/site';
 import type { paletteVars } from '../lib/palette';
+import SocialIcon from '../components/SocialIcon.astro';
 
 const { title, description = S.tagline, image = 'media/hero-ink.jpg', bare = false, noindex = false, palette = null } = Astro.props as {
   title?: string;
@@ -14,6 +15,7 @@ const { title, description = S.tagline, image = 'media/hero-ink.jpg', bare = fal
 const full = title ? `${title} · ${S.siteName}` : S.siteName;
 // only ever link out to Spotify, even if the settings file was edited by hand
 const spotify = /^https:\/\/open\.spotify\.com\/\S+$/.test(S.social.spotify ?? '') ? S.social.spotify : '';
+const substack = /^https:\/\/([a-z0-9-]+\.)?substack\.com\/\S+$/.test(S.social.substack ?? '') ? S.social.substack : '';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const path = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) : Astro.url.pathname.replace(/^\//, '');
 const section = path.split('/')[0] || 'home';
@@ -81,8 +83,9 @@ const og = new URL(url(image), Astro.site).href;
             </div>
             <div>
               <div class="fh">Connect</div>
-              {S.social.instagram && <a href={S.social.instagram} target="_blank" rel="noopener">Instagram</a>}
-              {spotify && <a href={spotify} target="_blank" rel="noopener noreferrer">Spotify</a>}
+              {S.social.instagram && <a class="soc" href={S.social.instagram} target="_blank" rel="noopener"><SocialIcon name="instagram" />Instagram</a>}
+              {spotify && <a class="soc" href={spotify} target="_blank" rel="noopener noreferrer"><SocialIcon name="spotify" />Spotify</a>}
+              {substack && <a class="soc" href={substack} target="_blank" rel="noopener noreferrer"><SocialIcon name="substack" />Substack</a>}
               {S.contactEmail && <a href={`mailto:${S.contactEmail}`}>{S.contactEmail}</a>}
               <a href={url('privacy/')}>Privacy</a>
             </div>

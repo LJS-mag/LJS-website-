@@ -11,7 +11,7 @@ export type Post = { id: string; title: string; author: string; category: string
 export type Insta = { id: string; url: string; image?: string; theme: string; count: number; date: string; caption?: string; sample?: boolean };
 export type Settings = {
   siteName: string; tagline: string; applicationsOpen: boolean; contactEmail: string; formRelayKey: string;
-  social: { instagram?: string; spotify?: string; tiktok?: string; youtube?: string };
+  social: { instagram?: string; spotify?: string; substack?: string; tiktok?: string; youtube?: string };
   stats: { value: string; label: string }[]; about: string; teamIntro: { writers: string; designers: string };
   [k: string]: unknown;
 };
