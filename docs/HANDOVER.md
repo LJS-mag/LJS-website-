@@ -15,7 +15,7 @@ You need: the society's shared email address, and one person who will be the mai
 5. **Form key:** go to web3forms.com, enter the society email, and copy the access key they send. (This is how applications and reviews reach the inbox.)
 6. **Make the admin token** (this is the password the admin page uses to save changes):
    - GitHub > your profile picture > Settings > Developer settings > Personal access tokens > **Fine-grained tokens** > Generate new token.
-   - Name: "Website admin". Expiration: 1 year.
+   - Name: "Website admin". Expiration: 1 year (the setup screen asks for this date, so it can warn you a month before it ends).
    - Repository access: **Only select repositories** > choose the website repository.
    - Permissions: **Contents: Read and write**, **Actions: Read-only**.
    - Generate, and copy the token (it is shown once).
@@ -76,7 +76,8 @@ Home > **Download a backup** gives you one file with all content (issues, journa
 
 | Problem | What to do |
 |---|---|
-| "The token was rejected" or the admin cannot save | The token expired (they last 1 year) or was removed. Make a new token (step 6), then on the login screen choose "Set this device up again". |
+| "GitHub no longer accepts the saved token" (a red banner under the top bar) or the admin cannot save | The token expired or was removed. In GitHub open the token "Website admin" and choose **Regenerate token** with an expiry one year ahead (or make a new one, step 6). Then in the admin press Lock, choose "Set this device up again", paste the token and enter the new expiry date. Unpublished work stays on the device. Do the same on the phone. |
+| A yellow banner says "Your token expires in N days" | Renew the token the same way before the date. The admin warns 30 days ahead, on every screen. It knows the date because you typed it when setting up the device (GitHub shows it next to "Expires on" on the token page). Home shows the date too. |
 | "The website changed somewhere else" | Someone else published first. Close and reopen the admin, then make your change again. |
 | The update did not work (red bar) | The previous version is still live. Open the link in the bar to see why, or ask the developer. Usually a field was left empty. |
 | Forgot the PIN | Login screen > "Set this device up again" and enter the token again (or make a new one). |

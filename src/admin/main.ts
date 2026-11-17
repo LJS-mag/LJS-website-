@@ -10,6 +10,7 @@ import * as team from './screens/team';
 import * as reviews from './screens/reviews';
 import * as settings from './screens/settings';
 import * as instagram from './screens/instagram';
+import { setExpiry, clearExpiry, expiryState, suggestedExpiry, checkExpiry, fmtDate, markAuthProblem, clearAuthProblem, hasAuthProblem, RENEW_STEPS } from './expiry';
 
 const root = document.getElementById('admin')!;
 const logo = siteUrl('media/logo-eggplant.png');
@@ -36,6 +37,7 @@ function showSetup(msg = '') {
       </ol></details>
       <label class="a-f"><span>Website repository</span><input name="repo" value="${esc(guessRepo())}" placeholder="society-name/website" required autocomplete="off" spellcheck="false"></label>
       <label class="a-f"><span>Token</span><input name="token" type="password" required autocomplete="off" spellcheck="false" placeholder="github_pat_…"></label>
+      <label class="a-f"><span>When does the token expire?</span><input name="expiry" type="date" required value="${esc(suggestedExpiry())}"><small>GitHub shows this date next to "Expires on" on the token page. If you chose one year, the suggested date is right. The admin warns you a month before.</small></label>
       <div class="a-two">
         <label class="a-f"><span>Choose a PIN</span><input name="pin" type="password" inputmode="numeric" minlength="6" required autocomplete="new-password"><small>At least 6 digits.</small></label>
         <label class="a-f"><span>PIN again</span><input name="pin2" type="password" inputmode="numeric" required autocomplete="new-password"></label>
@@ -59,14 +61,19 @@ function showSetup(msg = '') {
     if (!token) return err('Paste the token from GitHub.');
     if (!/^\d{6,}$/.test(pin) && pin.length < 8) return err('Use a PIN of at least 6 digits.');
     if (pin !== d.get('pin2')) return err('The two PINs are different.');
+    const expiry = String(d.get('expiry') || '');
+    const badDate = checkExpiry(expiry);
+    if (badDate) return err(badDate);
     const cfg: RepoCfg = { owner, name, branch: String(d.get('branch')).trim() || 'main', api: String(d.get('api')).trim().replace(/\/$/, '') };
     const b = $<HTMLButtonElement>('button[type=submit]');
     b.disabled = true; b.textContent = 'Checking…';
     try {
       await new GitHub(cfg, token).verify();
       await saveSetup(cfg, token, pin);
+      setExpiry(expiry);
+      clearAuthProblem();
       await start(token);
-    } catch (x: any) { err(x.message || 'Could not connect.'); b.disabled = false; b.textContent = 'Connect'; }
+    } catch (x: any) { err(x.auth ? 'GitHub did not accept that token. Check that you copied all of it, and that it has not expired.' : x.message || 'Could not connect.'); b.disabled = false; b.textContent = 'Connect'; }
   });
 }
 
@@ -83,7 +90,7 @@ function showLock(msg = '') {
       <button class="btn" type="submit">Unlock</button>
       <a href="#" class="a-link" id="forget">Set this device up again</a>
     </form></div>`;
-  $('#forget').addEventListener('click', (e) => { e.preventDefault(); if (confirm('This removes the saved token from this device. You will need a new token to connect again.')) { forgetDevice(); showSetup(); } });
+  $('#forget').addEventListener('click', (e) => { e.preventDefault(); if (confirm('This removes the saved token from this device. You will need a new token to connect again.')) { forgetDevice(); clearExpiry(); showSetup(); } });
   const f = $<HTMLFormElement>('form');
   f.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -106,7 +113,9 @@ async function start(token: string) {
   root.innerHTML = '<div class="a-center"><p class="a-help">Loading the website…</p></div>';
   try {
     await loadAll(ctx.gh);
+    clearAuthProblem(); // the token works
   } catch (x: any) {
+    if (x.auth) markAuthProblem();
     root.innerHTML = `<div class="a-center"><div class="a-lock"><h1>Could not load</h1><p class="a-err">${esc(x.message)}</p><button class="btn" id="retry">Try again</button> <button class="btn ghost" id="lock">Lock</button></div></div>`;
     $('#retry').addEventListener('click', () => start(token));
     $('#lock').addEventListener('click', () => showLock());
@@ -138,6 +147,9 @@ function shell() {
     </div>
     <div id="a-build" class="a-buildbar" hidden></div>
     <div id="a-modal" class="a-modal" hidden></div>`;
+  $('header.a-top').insertAdjacentHTML('afterend', '<div id="a-exp" class="a-expbar" role="status" hidden></div>');
+  window.addEventListener('ljs-expiry', refreshExpiry);
+  refreshExpiry();
   $('#a-lock').addEventListener('click', async () => { await saveDraft(); showLock(); });
   $('#a-publish').addEventListener('click', publish);
   $('#a-discard').addEventListener('click', async () => {
@@ -150,6 +162,20 @@ function shell() {
   });
   window.addEventListener('ljs-changed', refreshBar);
   refreshBar();
+}
+
+/* A banner under the top bar on every screen once the token is close to its end, has ended, or GitHub refused it. */
+function refreshExpiry() {
+  const el = document.getElementById('a-exp');
+  if (!el) return;
+  const e = expiryState();
+  let cls = '', html = '';
+  if (hasAuthProblem()) { cls = 'bad'; html = '<b>GitHub is not accepting the saved token.</b> It has most likely expired or been removed. You cannot publish until you press <b>Lock</b>, choose <b>Set this device up again</b> and paste a new token.'; }
+  else if (e.state === 'expired') { cls = 'bad'; html = `<b>Your token expired on ${esc(fmtDate(e.date!))}.</b> You cannot publish until you set this device up again with a new token.`; }
+  else if (e.state === 'soon') { cls = 'warn'; html = `<b>Your token expires in ${e.days} day${e.days === 1 ? '' : 's'} (${esc(fmtDate(e.date!))}).</b> Renew it soon, so you are not locked out in the middle of publishing.`; }
+  el.hidden = !html;
+  el.className = `a-expbar ${cls}`;
+  el.innerHTML = html ? `${html}${RENEW_STEPS}` : '';
 }
 
 function route() {
@@ -199,6 +225,7 @@ async function publish() {
     watchBuild(sha);
   } catch (x: any) {
     modal.hidden = true;
+    if (x.auth) markAuthProblem();
     toast(x.message || 'Publishing failed. Your changes are still here.', 'err');
   } finally { publishing = false; }
 }

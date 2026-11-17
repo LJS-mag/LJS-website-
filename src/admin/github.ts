@@ -26,7 +26,9 @@ export class GitHub {
     if (!res.ok) {
       let msg = res.statusText;
       try { msg = (await res.json()).message || msg; } catch { /* ignore */ }
-      throw new Error(res.status === 401 ? 'GitHub rejected the token (expired or wrong). Set the device up again with a new token.' : res.status === 403 ? `GitHub refused: ${msg}` : res.status === 404 ? `Not found: ${path}` : `${res.status} ${msg}`);
+      const err: Error & { auth?: boolean } = new Error(res.status === 401 ? 'GitHub no longer accepts the saved token. It has most likely expired. Press Lock, choose "Set this device up again", and paste a new token.' : res.status === 403 ? `GitHub refused: ${msg}` : res.status === 404 ? `Not found: ${path}` : `${res.status} ${msg}`);
+      if (res.status === 401) err.auth = true; // lets the admin show the renewal steps
+      throw err;
     }
     return res;
   }
